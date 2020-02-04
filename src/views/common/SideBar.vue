@@ -62,6 +62,11 @@ export default {
           title: '系统首页'
         },
         {
+          icon: 'el-icon-question',
+          index: 'introduce',
+          title: '系统介绍'
+        },
+        {
           icon: 'el-icon-menu',
           index: 'table',
           title: '基础表格'

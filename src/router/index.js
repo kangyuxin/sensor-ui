@@ -20,6 +20,11 @@ export default new Router({
           meta: { title: '系统首页' }
         },
         {
+          path: '/introduce',
+          component: () => import(/* webpackChunkName: "dashboard" */ '../views/intro/Introduce'),
+          meta: { title: '系统介绍' }
+        },
+        {
           path: '/table',
           component: () => import(/* webpackChunkName: "table" */ '../views/BaseTable'),
           meta: { title: '基础表格' }
