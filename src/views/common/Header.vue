@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <!-- 折叠按钮 -->
-    <div class="collapse-btn" @click="collapseChage">
+    <div class="collapse-btn" @click="collapseChange">
       <i v-if="!collapse" class="el-icon-s-fold"></i>
       <i v-else class="el-icon-s-unfold"></i>
     </div>
@@ -25,10 +25,10 @@
                         <i class="el-icon-caret-bottom"></i>
                     </span>
           <el-dropdown-menu slot="dropdown">
-            <a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
+            <a href="https://github.com/kangyuxin/sensor-ui" target="_blank">
               <el-dropdown-item>项目仓库</el-dropdown-item>
             </a>
-            <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
+            <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -61,7 +61,7 @@ export default {
       }
     },
     // 侧边栏折叠
-    collapseChage () {
+    collapseChange () {
       this.collapse = !this.collapse
       bus.$emit('collapse', this.collapse)
     },
