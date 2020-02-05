@@ -50,7 +50,7 @@ export default {
   name: 'upload',
   data: function () {
     return {
-      defaultSrc: require('../assets/img.jpg'),
+      defaultSrc: require('../assets/user.png'),
       fileList: [],
       imgSrc: '',
       cropImg: '',

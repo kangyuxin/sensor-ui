@@ -3,7 +3,7 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -21,7 +21,7 @@ export default new Router({
         },
         {
           path: '/introduce',
-          component: () => import(/* webpackChunkName: "dashboard" */ '../views/intro/Introduce'),
+          component: () => import(/* webpackChunkName: "introduce" */ '../views/intro/Introduce'),
           meta: { title: '系统介绍' }
         },
         {
@@ -61,7 +61,7 @@ export default new Router({
     },
     {
       path: '/login',
-      component: () => import(/* webpackChunkName: "login" */ '../views/Login'),
+      component: () => import(/* webpackChunkName: "user" */ '../views/Login'),
       meta: { title: '登录' }
     },
     {
@@ -70,3 +70,28 @@ export default new Router({
     }
   ]
 })
+
+// 路由导航守卫
+router.beforeEach((to, from, next) => {
+  // 登录界面登录成功之后，会把用户信息保存在会话
+  // 存在时间为会话生命周期，页面关闭即失效。
+  const token = window.sessionStorage.getItem('token')
+  // let username = sessionStorage.getItem('user')
+  if (to.path === '/login') {
+    // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页
+    if (token) {
+      next({ path: '/' })
+    } else {
+      next()
+    }
+  } else {
+    // 如果访问非登录界面，且户会话信息不存在，代表未登录，则跳转到登录界面
+    if (!token) {
+      next({ path: '/login' })
+    } else {
+      next()
+    }
+  }
+})
+
+export default router

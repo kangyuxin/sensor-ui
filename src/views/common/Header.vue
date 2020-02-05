@@ -16,7 +16,7 @@
         </div>
         <!-- 用户头像 -->
         <div class="user-avator">
-          <img src="../../assets/img.jpg" />
+          <img src="../../assets/user.png" />
         </div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
@@ -57,7 +57,7 @@ export default {
     handleCommand (command) {
       if (command === 'logout') {
         localStorage.removeItem('ms_username')
-        this.$router.push('/login')
+        this.$router.push('/user')
       }
     },
     // 侧边栏折叠
