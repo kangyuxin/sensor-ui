@@ -56,9 +56,15 @@ export default {
     // 用户名下拉菜单选择事件
     handleCommand (command) {
       if (command === 'logout') {
-        localStorage.removeItem('ms_username')
-        window.sessionStorage.clear()
-        this.$router.push('/login')
+        this.$confirm('确认退出吗?', '提示', {
+          type: 'warning'
+        })
+          .then(() => {
+            localStorage.removeItem('ms_username')
+            window.sessionStorage.clear()
+            this.$router.push('/login')
+          })
+          .catch(() => {})
       }
     },
     // 侧边栏折叠
