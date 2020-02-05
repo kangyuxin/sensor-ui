@@ -2,8 +2,8 @@
   <div class="header">
     <!-- 折叠按钮 -->
     <div class="collapse-btn" @click="collapseChange">
-      <i v-if="!collapse" class="el-icon-s-fold"></i>
-      <i v-else class="el-icon-s-unfold"></i>
+      <i v-if="!collapse" class="el-icon-s-fold"/>
+      <i v-else class="el-icon-s-unfold"/>
     </div>
     <div class="logo">传感器信息平台</div>
     <div class="header-right">
@@ -11,7 +11,7 @@
         <!-- 全屏显示 -->
         <div class="btn-fullscreen" @click="handleFullScreen">
           <el-tooltip effect="dark" :content="fullscreen?`取消全屏`:`全屏`" placement="bottom">
-            <i class="el-icon-rank"></i>
+            <i class="el-icon-rank"/>
           </el-tooltip>
         </div>
         <!-- 用户头像 -->
@@ -22,7 +22,7 @@
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
                         {{username}}
-                        <i class="el-icon-caret-bottom"></i>
+                        <i class="el-icon-caret-bottom"/>
                     </span>
           <el-dropdown-menu slot="dropdown">
             <a href="https://github.com/kangyuxin/sensor-ui" target="_blank">
@@ -42,7 +42,7 @@ export default {
     return {
       collapse: false,
       fullscreen: false,
-      name: 'kangyuxin',
+      name: 'kyx',
       message: 2
     }
   },
@@ -57,7 +57,8 @@ export default {
     handleCommand (command) {
       if (command === 'logout') {
         localStorage.removeItem('ms_username')
-        this.$router.push('/user')
+        window.sessionStorage.clear()
+        this.$router.push('/login')
       }
     },
     // 侧边栏折叠

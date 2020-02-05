@@ -10,3 +10,12 @@ Mock.mock('/user/login', 'post', function (option) {
     token: 'kyx_is_handsome'
   }
 })
+
+// 模拟登出接口
+Mock.mock('/user/logout', 'get', function (option) {
+  console.log(option)
+  return {
+    msg: '',
+    code: 200
+  }
+})

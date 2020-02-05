@@ -58,8 +58,10 @@ export default {
           }
           const { data: res } = await this.$http.post('/user/login', loginParam)
           console.log(res)
-          if (res.code !== 200) this.$message.error('账号或密码有误')
-          else {
+          if (res.code !== 200) {
+            this.$message.error('账号或密码有误')
+            this.loading = false
+          } else {
             this.$message.success('登录成功')
             window.sessionStorage.setItem('token', res.token)
             window.sessionStorage.setItem('user', this.loginForm.username)

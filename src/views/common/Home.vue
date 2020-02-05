@@ -1,16 +1,16 @@
 <template>
   <div class="wrapper">
-    <v-head></v-head>
-    <v-sidebar></v-sidebar>
+    <v-head/>
+    <v-sidebar/>
     <div class="content-box" :class="{'content-collapse':collapse}">
-      <v-tags></v-tags>
+      <v-tags/>
       <div class="content">
         <transition name="move" mode="out-in">
           <keep-alive :include="tagsList">
-            <router-view></router-view>
+            <router-view/>
           </keep-alive>
         </transition>
-        <el-backtop target=".content"></el-backtop>
+        <el-backtop target=".content"/>
       </div>
     </div>
   </div>
