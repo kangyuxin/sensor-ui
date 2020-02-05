@@ -59,28 +59,19 @@ export default {
           const { data: res } = await this.$http.post('/user/login', loginParam)
           console.log(res)
           if (res.code !== 200) this.$message.error('账号或密码有误')
-          this.$message.success('登录成功')
-          window.sessionStorage.setItem('token', res.token)
-          window.sessionStorage.setItem('user', this.loginForm.username)
-          localStorage.setItem('ms_username', this.loginForm.username)
-          this.$router.push('/')
+          else {
+            this.$message.success('登录成功')
+            window.sessionStorage.setItem('token', res.token)
+            window.sessionStorage.setItem('user', this.loginForm.username)
+            localStorage.setItem('ms_username', this.loginForm.username)
+            this.$router.push('/')
+          }
         } else {
           this.$message.error('请输入账号和密码')
           console.log('error submit!!')
           return false
         }
       })
-      // this.$refs.loginFormRef.validate(valid => {
-      //   if (valid) {
-      //     this.$message.success('登录成功')
-      //     localStorage.setItem('ms_username', this.loginForm.username)
-      //     this.$router.push('/')
-      //   } else {
-      //     this.$message.error('请输入账号和密码')
-      //     console.log('error submit!!')
-      //     return false
-      //   }
-      // })
     }
   }
 }
