@@ -33,7 +33,7 @@ export default {
     return {
       loading: false,
       loginForm: {
-        username: 'kangyuxin',
+        username: 'admin',
         password: 'admin'
       },
       rules: {
@@ -56,22 +56,24 @@ export default {
             username: this.loginForm.username,
             password: this.loginForm.password
           }
-          const { data: res } = await this.$http.post('/user/login', loginParam)
+          const { data: res } = await this.$http.post('http://localhost:8080/other/login.action', loginParam)
           console.log(res)
-          if (res.code !== 200) {
-            this.$message.error('账号或密码有误')
-            this.loading = false
-          } else {
-            this.$message.success('登录成功')
-            window.sessionStorage.setItem('token', res.token)
-            window.sessionStorage.setItem('user', this.loginForm.username)
-            localStorage.setItem('ms_username', this.loginForm.username)
-            this.$router.push('/')
-          }
-        } else {
-          this.$message.error('请输入账号和密码')
-          console.log('error submit!!')
-          return false
+          //   if (res.code !== 200) {
+          //     this.$message.error('账号或密码有误')
+          //     this.loading = false
+          //   } else {
+          //     this.$message.success('登录成功')
+          //     window.sessionStorage.setItem('token', res.token)
+          //     window.sessionStorage.setItem('user', this.loginForm.username)
+          //     localStorage.setItem('ms_username', this.loginForm.username)
+          //     this.$router.push('/')
+          //   }
+          // } else {
+          //   this.loading = false
+          //   this.$message.error('请输入账号和密码')
+          //   console.log('error submit!!')
+          //   return false
+          // }
         }
       })
     }

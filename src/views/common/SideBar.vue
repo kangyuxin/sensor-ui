@@ -14,7 +14,7 @@
         <template v-if="item.subs">
           <el-submenu :index="item.index" :key="item.index">
             <template slot="title">
-              <i :class="item.icon"></i>
+              <i :class="item.icon"/>
               <span slot="title">{{ item.title }}</span>
             </template>
             <template v-for="subItem in item.subs">
@@ -23,7 +23,10 @@
                 :index="subItem.index"
                 :key="subItem.index"
               >
-                <template slot="title">{{ subItem.title }}</template>
+                <template slot="title">
+                  <i :class="item.subs.icon"/>
+                  <span slot="title">{{ subItem.title }}</span>
+                </template>
                 <el-menu-item
                   v-for="(threeItem,i) in subItem.subs"
                   :key="i"
@@ -40,7 +43,7 @@
         </template>
         <template v-else>
           <el-menu-item :index="item.index" :key="item.index">
-            <i :class="item.icon"></i>
+            <i :class="item.icon"/>
             <span slot="title">{{ item.title }}</span>
           </el-menu-item>
         </template>
@@ -99,6 +102,7 @@ export default {
               title: '权限测试'
             },
             {
+              icon: 'el-icon-loading',
               index: '404',
               title: '404页面'
             }

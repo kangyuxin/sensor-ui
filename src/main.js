@@ -8,8 +8,9 @@ import { messages } from './components/i18n'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/icon.css'
 import 'babel-polyfill'
+// import http from './api/index'
+// Vue.use(http)
 import axios from 'axios'
-import './mock/index'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
