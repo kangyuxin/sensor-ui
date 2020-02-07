@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 
 // 模拟登录接口
-Mock.mock('/user/login', 'post', function (option) {
+Mock.mock('http://localhost:8088/other/login.action', 'post', function (option) {
   console.log(option)
   return {
     username: 'kangyuxin',

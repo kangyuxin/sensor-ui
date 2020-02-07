@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from './config'
 import Cookies from 'js-cookie'
 import router from '../router/index'
-import qs from 'qs'
+// import qs from 'qs'
 
 // 使用vuex做全局loading时使用
 // import store from '@/store'
@@ -41,7 +41,7 @@ export default function $axios (options) {
           // } else {
           // config.data = qs.stringify(config.data)
           // }
-          config.data = qs.stringify(config.data)
+          // config.data = qs.stringify(config.data)
         }
 
         return config
