@@ -1,15 +1,6 @@
 <template>
   <div class="sidebar">
-    <el-menu
-      class="sidebar-el-menu"
-      :default-active="onRoutes"
-      :collapse="collapse"
-      background-color="#324157"
-      text-color="#bfcbd9"
-      active-text-color="#20a0ff"
-      unique-opened
-      router
-    >
+    <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
       <template v-for="item in items">
         <template v-if="item.subs">
           <el-submenu :index="item.index" :key="item.index">
@@ -18,26 +9,15 @@
               <span slot="title">{{ item.title }}</span>
             </template>
             <template v-for="subItem in item.subs">
-              <el-submenu
-                v-if="subItem.subs"
-                :index="subItem.index"
-                :key="subItem.index"
-              >
-                <template slot="title">
-                  <i :class="item.subs.icon"/>
-                  <span slot="title">{{ subItem.title }}</span>
-                </template>
-                <el-menu-item
-                  v-for="(threeItem,i) in subItem.subs"
-                  :key="i"
-                  :index="threeItem.index"
-                >{{ threeItem.title }}</el-menu-item>
+              <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+                <template slot="title">{{ subItem.title }}</template>
+                <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.index">
+                  {{ threeItem.title }}
+                </el-menu-item>
               </el-submenu>
-              <el-menu-item
-                v-else
-                :index="subItem.index"
-                :key="subItem.index"
-              >{{ subItem.title }}</el-menu-item>
+              <el-menu-item v-else :index="subItem.index" :key="subItem.index">
+                <i :class="subItem.icon"/>{{ subItem.title }}
+              </el-menu-item>
             </template>
           </el-submenu>
         </template>
@@ -65,9 +45,33 @@ export default {
           title: '系统首页'
         },
         {
-          icon: 'el-icon-question',
-          index: 'introduce',
-          title: '系统介绍'
+          icon: 'el-icon-switch-button',
+          index: '1',
+          title: '系统相关',
+          subs: [
+            {
+              icon: 'el-icon-location-information',
+              index: 'introduce',
+              title: '系统介绍'
+            },
+            {
+              icon: 'el-icon-view',
+              index: 'monitor',
+              title: '系统监控'
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-user',
+          index: '2',
+          title: '用户相关',
+          subs: [
+            {
+              icon: 'el-icon-add-location',
+              index: 'user',
+              title: '用户管理'
+            }
+          ]
         },
         {
           icon: 'el-icon-menu',
@@ -93,7 +97,7 @@ export default {
         },
         {
           icon: 'el-icon-info',
-          index: '7',
+          index: '4',
           title: '错误处理',
           subs: [
             {

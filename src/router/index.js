@@ -61,12 +61,24 @@ const router = new Router({
           path: '/403',
           component: () => import(/* webpackChunkName: "403" */ '../views/error/403'),
           meta: { title: '403' }
+        },
+        {
+          // 监控页面
+          path: '/monitor',
+          component: () => import(/* webpackChunkName: "SystemMonitor" */ '../views/system/SystemMonitor'),
+          meta: { title: '系统监控' }
+        },
+        {
+          // 用户管理页面
+          path: '/user',
+          component: () => import(/* webpackChunkName: "SystemMonitor" */ '../views/user/User'),
+          meta: { title: '用户管理' }
         }
       ]
     },
     {
       path: '/login',
-      component: () => import(/* webpackChunkName: "user" */ '../views/Login'),
+      component: () => import(/* webpackChunkName: "user" */ '../views/login/Login'),
       meta: { title: '登录' }
     },
     {
