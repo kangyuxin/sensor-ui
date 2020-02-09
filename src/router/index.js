@@ -70,8 +70,8 @@ const router = new Router({
         },
         {
           // 用户管理页面
-          path: '/user',
-          component: () => import(/* webpackChunkName: "SystemMonitor" */ '../views/user/User'),
+          path: '/userList',
+          component: () => import(/* webpackChunkName: "UserList" */ '../views/user/User'),
           meta: { title: '用户管理' }
         }
       ]

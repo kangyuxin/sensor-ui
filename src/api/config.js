@@ -1,7 +1,7 @@
 export default {
   method: 'get',
   // 基础url前缀
-  baseUrl: 'http://localhost:8088',
+  baseUrl: 'http://localhost:8443',
   // 请求头信息
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'

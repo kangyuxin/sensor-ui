@@ -4,7 +4,7 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-lx-cascades"/> 用户管理
+          <i class="el-icon-add-location"/> 用户管理
         </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -16,87 +16,146 @@
           type="primary"
           icon="el-icon-delete"
           class="handle-del mr10"
+          @click="delAllSelection"
         >批量删除</el-button>
-        <el-input placeholder="用户名" class="handle-input mr10"/>
-        <el-button type="primary" icon="el-icon-search" >搜索</el-button>
-        <el-button type="primary" icon="el-icon-plus" >添加用户</el-button>
+        <el-input placeholder="请输入内容"
+                  class="handle-input mr10"
+                  v-model="queryInfo.query"
+                  clearable
+        />
+        <el-button type="primary" icon="el-icon-search" @click="getUserList">搜索</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="editVisible = true">添加用户</el-button>
       </div>
-<!--      <el-table-->
-<!--        :data="tableData"-->
-<!--        border-->
-<!--        class="table"-->
-<!--        ref="multipleTable"-->
-<!--        header-cell-class-name="table-header"-->
-<!--        @selection-change="handleSelectionChange"-->
-<!--      >-->
-<!--        <el-table-column type="selection" width="55" align="center"/>-->
-<!--        <el-table-column prop="id" label="ID" width="55" align="center"/>-->
-<!--        <el-table-column prop="username" label="用户名"/>-->
-<!--        <el-table-column prop="password" label="密码"/>-->
-<!--        <el-table-column prop="email" label="邮箱"/>-->
-<!--        <el-table-column label="状态" align="center">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-tag-->
-<!--              :type="scope.row.state==='成功'?'success':(scope.row.state==='失败'?'danger':'')"-->
-<!--            >{{scope.row.state}}</el-tag>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-
-<!--        <el-table-column prop="date" label="注册时间"/>-->
-<!--        <el-table-column label="操作" width="180" align="center">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button-->
-<!--              type="text"-->
-<!--              icon="el-icon-edit"-->
-<!--              @click="handleEdit(scope.$index, scope.row)"-->
-<!--            >编辑</el-button>-->
-<!--            <el-button-->
-<!--              type="text"-->
-<!--              icon="el-icon-delete"-->
-<!--              class="red"-->
-<!--              @click="handleDelete(scope.$index, scope.row)"-->
-<!--            >删除</el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--      </el-table>-->
-<!--      <div class="pagination">-->
-<!--        <el-pagination-->
-<!--          background-->
-<!--          layout="total, prev, pager, next"-->
-<!--          :current-page="query.pageIndex"-->
-<!--          :page-size="query.pageSize"-->
-<!--          :total="pageTotal"-->
-<!--          @current-change="handlePageChange"-->
-<!--        />-->
-<!--      </div>-->
+      <!--用户列表区域-->
+      <el-table :data="userList"
+                border
+                class="table"
+                ref="multipleTable"
+                stripe
+                header-cell-class-name="table-header"
+                @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" align="center"/>
+        <el-table-column type="index" label="#" align="center">
+        </el-table-column>
+        <el-table-column prop="username" label="用户名" align="center"/>
+        <el-table-column prop="password" label="密码" align="center"/>
+        <el-table-column prop="email" label="邮箱" align="center"/>
+        <el-table-column label="状态" align="center">
+          <template slot-scope="scope">
+            <el-switch v-model="scope.row.mg_state"
+                       active-color="#13ce66"
+                       inactive-color="#ff4949"
+                       @change="userStateChanged(scope.row)"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" label="注册时间" align="center"/>
+        <el-table-column label="操作" width="180" align="center">
+          <template slot-scope="scope">
+            <el-tooltip content="编辑" placement="top" :enterable="false">
+              <el-button type="primary" icon="el-icon-edit" @click="handleEdit"/>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top" :enterable="false">
+              <el-button type="danger" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)"/>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!--分页区域-->
+      <div class="pagination">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="queryInfo.pageIndex"
+          :page-sizes="[2, 5, 10, 20, 50]"
+          :page-size="queryInfo.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="userList.length">
+        </el-pagination>
+      </div>
+      <!-- 添加用户弹出框 -->
+      <el-dialog title="添加用户" :visible.sync="editVisible" width="30%" @close="addDialogClosed">
+        <el-form ref="addFormRef"
+                 :model="addForm"
+                 label-width="70px"
+                 :rules="addFormRules"
+        >
+          <el-form-item label="用户名" prop="username">
+            <el-input v-model="addForm.username"/>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="addForm.password"/>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="addForm.email"/>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addUser">确 定</el-button>
+        </span>
+      </el-dialog>
+      <!-- 编辑用户的对话框 -->
+      <el-dialog
+        title="编辑用户信息"
+        :visible.sync="editDialogVisible"
+        width="50%">
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
-
-<!--    &lt;!&ndash; 编辑弹出框 &ndash;&gt;-->
-<!--    <el-dialog title="编辑" :visible.sync="editVisible" width="30%">-->
-<!--      <el-form ref="form" :model="form" label-width="70px">-->
-<!--        <el-form-item label="用户名">-->
-<!--          <el-input v-model="form.name"/>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="地址">-->
-<!--          <el-input v-model="form.address"/>-->
-<!--        </el-form-item>-->
-<!--      </el-form>-->
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--                <el-button @click="editVisible = false">取 消</el-button>-->
-<!--                <el-button type="primary" @click="saveEdit">确 定</el-button>-->
-<!--            </span>-->
-<!--    </el-dialog>-->
   </div>
 </template>
 
 <script>
 export default {
   data () {
+    // 验证邮箱的规则
+    var checkEmail = (rule, value, cb) => {
+      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+      if (regEmail.test(value)) {
+        return cb()
+      }
+      cb(new Error('请输入合法邮箱'))
+    }
+    // // 验证手机号
+    // var checkMobile = (rule, value, cb) => {
+    //   const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+    //   if (regMobile.test(value)) {
+    //     return cb()
+    //   }
+    //   cb(new Error('请输入合法手机号'))
+    // }
     return {
       queryInfo: {
+        query: '',
+        // 当前页码
         pageIndex: 1,
-        pageSize: 10
-      }
+        // 当前每页显示多少条数据
+        pageSize: 5
+      },
+      userList: [], // 用户表单
+      multipleSelection: [], // 批量选取
+      delList: [], // 批量删除
+      editVisible: false, // 控制添加用户对话框的显示和隐藏
+      pageTotal: 0, // 总页数
+      addForm: {
+        username: '',
+        password: '',
+        email: ''
+      }, // 添加用户的表单数据
+      addFormRules: {
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 3, max: 15, message: '用户名长度在3-15字符之间' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 15, message: '密码长度在6-15字符之间' }],
+        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }, { validator: checkEmail, trigger: 'blur' }]
+      }, // 添加用户表单验证
+      idx: -1,
+      id: -1,
+      editDialogVisible: false // 控制编辑用户对话框的显示和隐藏
     }
   },
   created () {
@@ -104,60 +163,85 @@ export default {
   },
   methods: {
     // 获取mock的模拟数据
-    // async getUserList () {
-    //   const { data: res } = await this.$http.user.getUserList('users', {
-    //     params: this.queryInfo
-    //   })
-    //   console.log(res)
-    // }
+    async getUserList () {
+      let params = {
+        pageIndex: this.queryInfo.pageIndex,
+        pageSize: this.queryInfo.pageSize
+      }
+      await this.$http.user.findPage(params).then((res) => {
+        // console.log(res)
+        if (res.code !== 200) {
+          return this.$message.error('获取用户列表失败！')
+        }
+        this.userList = res.data.content
+        this.pageTotal = res.data.content.length / this.queryInfo.pageSize
+      })
+    },
+    // 监听pageSize改变的事件
+    handleSizeChange (newSize) {
+      this.queryInfo.pageSize = newSize
+      this.getUserList()
+    },
+    // 监听页码值改变的事件
+    handleCurrentChange (newPage) {
+      this.queryInfo.pageIndex = newPage
+      this.getUserList()
+    },
+    // 多选操作
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    // 批量删除
+    delAllSelection () {
+      const length = this.multipleSelection.length
+      let str = ''
+      this.delList = this.delList.concat(this.multipleSelection)
+      for (let i = 0; i < length; i++) {
+        str += this.multipleSelection[i].name + ' '
+      }
+      this.$message.error(`删除了${str}`)
+      this.multipleSelection = []
+    },
     // // 触发搜索按钮
     // handleSearch () {
-    //   this.$set(this.query, 'pageIndex', 1)
+    //   this.$set(this.queryInfo, 'pageIndex', 1)
     //   this.getUserList()
     // },
-    // // 删除操作
-    // handleDelete (index, row) {
-    //   // 二次确认删除
-    //   this.$confirm('确定要删除吗？', '提示', {
-    //     type: 'warning'
-    //   })
-    //     .then(() => {
-    //       this.$message.success('删除成功')
-    //       this.tableData.splice(index, 1)
-    //     })
-    //     .catch(() => {})
-    // },
-    // // 多选操作
-    // handleSelectionChange (val) {
-    //   this.multipleSelection = val
-    // },
-    // delAllSelection () {
-    //   const length = this.multipleSelection.length
-    //   let str = ''
-    //   this.delList = this.delList.concat(this.multipleSelection)
-    //   for (let i = 0; i < length; i++) {
-    //     str += this.multipleSelection[i].name + ' '
-    //   }
-    //   this.$message.error(`删除了${str}`)
-    //   this.multipleSelection = []
-    // },
-    // // 编辑操作
-    // handleEdit (index, row) {
-    //   this.idx = index
-    //   this.form = row
-    //   this.editVisible = true
-    // },
-    // // 保存编辑
-    // saveEdit () {
-    //   this.editVisible = false
-    //   this.$message.success(`修改第 ${this.idx + 1} 行成功`)
-    //   this.$set(this.tableData, this.idx, this.form)
-    // },
-    // // 分页导航
-    // handlePageChange (val) {
-    //   this.$set(this.query, 'pageIndex', val)
-    //   this.getUserList()
-    // }
+    // 监听switch开关状态的改变
+    async userStateChanged (userInfo) {
+      // console.log(userInfo)
+      await this.$http.user.banUserById(userInfo).then((res) => {
+        if (res.code !== 200) {
+          userInfo.mg_state = !userInfo.mg_state
+          return this.$message.error('更新用户状态失败')
+        }
+        this.$message.success('更新用户状态成功')
+      })
+    },
+    // 监听添加用户对话框的关闭事件,使每次点开都是空白表单
+    addDialogClosed () {
+      this.$refs.addFormRef.resetFields()
+    },
+    // 添加新用户
+    addUser () {
+      this.$refs.addFormRef.validate(async valid => {
+        // console.log(valid)
+        // eslint-disable-next-line no-useless-return
+        if (!valid) return
+        await this.$http.user.addUser(this.addForm).then((res) => {
+          if (res.code !== 201) {
+            return this.$message.error('添加用户失败')
+          }
+          this.$message.success('添加用户成功')
+          this.editVisible = false
+          this.getUserList()
+        })
+      })
+    },
+    // 展示编辑用户对话框
+    handleEdit () {
+      this.editDialogVisible = true
+    }
   }
 }
 </script>

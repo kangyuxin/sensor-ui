@@ -49,31 +49,36 @@ export default {
       this.$refs.loginFormRef.resetFields()
     },
     login () {
-      this.$refs.loginFormRef.validate(async valid => {
-        if (valid) {
-          this.loading = true
-          let loginParam = {
-            username: this.loginForm.username,
-            password: this.loginForm.password
-          }
-          await this.$http.login.login(loginParam).then((res) => {
-            if (res.code !== 200) {
-              this.$message.error('账号或密码有误')
-              this.loading = false
-            } else {
-              this.$message.success('登录成功')
-              window.sessionStorage.setItem('token', res.token)
-              window.sessionStorage.setItem('user', this.loginForm.username)
-              localStorage.setItem('ms_username', this.loginForm.username)
-              this.$router.push('/')
-            }
-          })
-        } else {
-          this.loading = false
-          this.$message.error('请输入账号和密码')
-          console.log('error submit!!')
-          return false
-        }
+      // this.$refs.loginFormRef.validate(async valid => {
+      //   if (valid) {
+      //     this.loading = true
+      //     let params = new URLSearchParams()
+      //     params.append('username', this.loginForm.username)
+      //     params.append('password', this.loginForm.password)
+      //     await this.$http.login.login(params).then((res) => {
+      //       console.log(res)
+      //       // if (res.code !== 200) {
+      //       //   this.$message.error('账号或密码有误')
+      //       //   this.loading = false
+      //       // }
+      //       // this.$message.success('登录成功')
+      //       // window.sessionStorage.setItem('token', res.token)
+      //       // // window.sessionStorage.setItem('user', this.loginForm.username)
+      //       // localStorage.setItem('ms_username', this.loginForm.username)
+      //       // this.$router.push('/')
+      //     })
+      //   } else {
+      //     this.loading = false
+      //     this.$message.error('请输入账号和密码')
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
+      let params = new URLSearchParams()
+      params.append('username', this.loginForm.username)
+      params.append('password', this.loginForm.password)
+      this.$axios.post('/other/login.action', params).then((res) => {
+        console.log(res)
       })
     }
   }

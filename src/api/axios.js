@@ -1,6 +1,6 @@
 import axios from 'axios'
 import config from './config'
-import Cookies from 'js-cookie'
+// import Cookies from 'js-cookie'
 import router from '../router/index'
 // import qs from 'qs'
 
@@ -19,7 +19,7 @@ export default function $axios (options) {
     // request 拦截器
     instance.interceptors.request.use(
       config => {
-        let token = Cookies.get('token')
+        let token = window.sessionStorage.getItem('token')
         // 1. 请求开始的时候可以结合 vuex 开启全屏 loading 动画
         // console.log(store.state.loading)
         // console.log('准备发送请求...')

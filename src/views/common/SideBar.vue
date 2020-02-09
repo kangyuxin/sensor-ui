@@ -68,7 +68,7 @@ export default {
           subs: [
             {
               icon: 'el-icon-add-location',
-              index: 'user',
+              index: 'userList',
               title: '用户管理'
             }
           ]
