@@ -31,10 +31,12 @@
 export default {
   data: function () {
     return {
+      // 登录表单数据绑定对象
       param: {
         username: 'admin',
         password: '123123'
       },
+      // 登录表单规则
       rules: {
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
@@ -43,17 +45,32 @@ export default {
   },
   methods: {
     submitForm () {
-      this.$refs.login.validate(valid => {
-        if (valid) {
-          this.$message.success('登录成功')
-          localStorage.setItem('ms_username', this.param.username)
-          this.$router.push('/')
-        } else {
-          this.$message.error('请输入账号和密码')
-          console.log('error submit!!')
-          return false
-        }
-      })
+      // 合并param
+      let params = new URLSearchParams()
+      params.append('username', this.param.username)
+      params.append('password', this.param.password)
+      // 发送axios post请求给后台API
+      this.$axios
+        .post('/other/login.action', params)
+        .then(successResponse => {
+          // 登录成功
+          console.log(successResponse)
+        })
+        .catch(failResponse => {
+          // 登录失败
+          console.error(failResponse)
+        })
+      // this.$refs.login.validate(valid => {
+      //   if (valid) {
+      //     this.$message.success('登录成功')
+      //     localStorage.setItem('ms_username', this.param.username)
+      //     this.$router.push('/')
+      //   } else {
+      //     this.$message.error('请输入账号和密码')
+      //     console.log('error submit!!')
+      //     return false
+      //   }
+      // })
     }
   }
 }
