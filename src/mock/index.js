@@ -8,7 +8,7 @@ import * as user from './modules/user'
 // let openMock = true
 let openMock = false
 fnCreate(login, openMock)
-fnCreate(user, openMock)
+fnCreate(user, true)
 /**
  * 创建mock模拟数据
  * @param {*} mod 模块
@@ -19,7 +19,7 @@ function fnCreate (mod, isOpen = true) {
     for (var key in mod) {
       ((res) => {
         if (res.isOpen !== false) {
-          let url = 'http://localhost:8088'
+          let url = 'http://localhost:9999'
           if (!url.endsWith('/')) {
             url = url + '/'
           }

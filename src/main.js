@@ -14,7 +14,7 @@ import axios from 'axios'
 Vue.use(http)
 
 Vue.config.productionTip = false
-// // 设置反向代理，前端请求默认发送到 http://localhost:8888
+// // 设置反向代理，前端请求默认发送到 http://localhost:9999
 axios.defaults.baseURL = 'http://localhost:9999'
 Vue.prototype.$axios = axios
 
