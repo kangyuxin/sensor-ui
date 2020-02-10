@@ -8,14 +8,15 @@ import { messages } from './components/i18n'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/icon.css'
 import 'babel-polyfill'
-// import './mock/index'
-// import http from './api/index'
-// Vue.use(http)
+import './mock/index'
+import http from './api/index'
+import axios from 'axios'
+Vue.use(http)
 
 Vue.config.productionTip = false
-// 设置反向代理，前端请求默认发送到 http://localhost:8443
-var axios = require('axios')
-axios.default.baseURL = 'http://localhost:8443'
+// // 设置反向代理，前端请求默认发送到 http://localhost:8888
+axios.defaults.baseURL = 'http://localhost:9999'
+Vue.prototype.$axios = axios
 
 Vue.use(VueI18n)
 Vue.use(ElementUI, {
