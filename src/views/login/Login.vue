@@ -55,19 +55,25 @@ export default {
           let params = new URLSearchParams()
           params.append('username', this.loginForm.username)
           params.append('password', this.loginForm.password)
-          await this.$axios.post('/other/login.action', params).then((res) => {
-            console.log(res)
-            if (res.status !== 200) {
-              this.$message.error('账号或密码有误')
+          await this.$axios.post('/other/login.action', params, { timeout: 1000 * 60 * 1 })
+            .then((res) => {
+              console.log(res)
+              if (res.status !== 200) {
+                this.$message.error('账号或密码有误')
+                this.loading = false
+              }
+              this.$message.success('登录成功')
+              console.log(res.data)
+              window.sessionStorage.setItem('token', res.data)
+              window.sessionStorage.setItem('user', this.loginForm.username)
+              localStorage.setItem('ms_username', this.loginForm.username)
+              this.$router.push('/')
+            })
+            .catch((res) => {
+              console.log(res)
+              this.$message.error('Oh,ho！连接超时')
               this.loading = false
-            }
-            this.$message.success('登录成功')
-            console.log(res.data)
-            window.sessionStorage.setItem('token', res.data)
-            window.sessionStorage.setItem('user', this.loginForm.username)
-            localStorage.setItem('ms_username', this.loginForm.username)
-            this.$router.push('/')
-          })
+            })
         } else {
           this.loading = false
           this.$message.error('请输入账号和密码')
