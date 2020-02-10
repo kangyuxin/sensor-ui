@@ -54,10 +54,10 @@
         <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
             <el-tooltip content="编辑" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-edit" @click="handleEdit"/>
+              <el-button type="primary" icon="el-icon-edit" @click="handleEdit(scope.row.id)"/>
             </el-tooltip>
             <el-tooltip content="删除" placement="top" :enterable="false">
-              <el-button type="danger" icon="el-icon-delete" @click="handleDelete(scope.$index, scope.row)"/>
+              <el-button type="danger" icon="el-icon-delete" @click="handleDelete(scope.row.id)"/>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -101,10 +101,25 @@
         title="编辑用户信息"
         :visible.sync="editDialogVisible"
         width="50%">
-        <span>这是一段信息</span>
+        <el-form ref="editFormRef"
+                 :model="editForm"
+                 label-width="70px"
+                 :rules="editFormRules"
+                 @close="editDialogClosed"
+        >
+          <el-form-item label="用户名">
+            <el-input v-model="editForm.username"/>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="editForm.password"/>
+          </el-form-item>
+          <el-form-item label="邮箱" prop="email">
+            <el-input v-model="editForm.email"/>
+          </el-form-item>
+        </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="editUserInfo">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -155,7 +170,12 @@ export default {
       }, // 添加用户表单验证
       idx: -1,
       id: -1,
-      editDialogVisible: false // 控制编辑用户对话框的显示和隐藏
+      editDialogVisible: false, // 控制编辑用户对话框的显示和隐藏
+      editForm: {}, // 查询到的用户信息对象
+      editFormRules: {
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 15, message: '密码长度在6-15字符之间' }],
+        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }, { validator: checkEmail, trigger: 'blur' }]
+      }
     }
   },
   created () {
@@ -239,8 +259,58 @@ export default {
       })
     },
     // 展示编辑用户对话框
-    handleEdit () {
+    async handleEdit (id) {
       this.editDialogVisible = true
+      // console.log(id)
+      await this.$axios.get('users/' + id).then((res) => {
+        if (res.status !== 200) {
+          return this.$message.error('查询用户信息失败')
+        }
+        this.editForm = res.data
+      })
+    },
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
+    },
+    editUserInfo () {
+      this.$refs.editFormRef.validate(async valid => {
+        // console.log(valid)
+        if (!valid) return
+        await this.$axios.put('users/' + this.editForm.id, {
+          password: this.editForm.password,
+          email: this.editForm.email
+        }).then((res) => {
+          console.log(res)
+          if (res.status !== 200) {
+            return this.$message.error('更新用户信息失败')
+          }
+          this.editDialogVisible = false
+          this.getUserList()
+          this.$message.success('更新用户信息成功')
+        })
+      })
+    },
+    // 根据id值删除对应的用户信息
+    handleDelete (id) {
+      // console.log(id)
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$axios.delete('users/' + id).then((res) => {
+          if (res.status !== 200) {
+            return this.$message.error('删除用户失败')
+          }
+          this.$message({ type: 'success', message: '删除成功!' })
+          this.getUserList()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

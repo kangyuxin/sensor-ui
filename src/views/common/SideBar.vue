@@ -74,19 +74,24 @@ export default {
           ]
         },
         {
-          icon: 'el-icon-menu',
-          index: 'table',
-          title: '基础表格'
+          icon: 'el-icon-cpu',
+          index: '3',
+          title: '传感器'
         },
         {
           icon: 'el-icon-s-order',
-          index: '3',
+          index: '4',
           title: '表单相关',
           subs: [
             {
               icon: 'el-icon-folder-add',
               index: 'upload',
               title: '文件上传'
+            },
+            {
+              icon: 'el-icon-menu',
+              index: 'table',
+              title: '基础表格'
             }
           ]
         },
@@ -97,7 +102,7 @@ export default {
         },
         {
           icon: 'el-icon-info',
-          index: '4',
+          index: '5',
           title: '错误处理',
           subs: [
             {
