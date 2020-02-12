@@ -73,6 +73,12 @@ const router = new Router({
           path: '/userList',
           component: () => import(/* webpackChunkName: "UserList" */ '../views/user/User'),
           meta: { title: '用户管理' }
+        },
+        {
+          // 传感器页面
+          path: '/sensorList',
+          component: () => import(/* webpackChunkName: "SensorList" */ '../views/sensor/Sensor'),
+          meta: { title: '传感器' }
         }
       ]
     },

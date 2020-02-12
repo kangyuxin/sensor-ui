@@ -1,6 +1,7 @@
 import Mock from 'mockjs'
 import * as login from './modules/login'
 import * as user from './modules/user'
+import * as sensor from './modules/sensor'
 
 // 1. 开启/关闭[所有模块]拦截, 通过调[openMock参数]设置.
 // 2. 开启/关闭[业务模块]拦截, 通过调用fnCreate方法[isOpen参数]设置.
@@ -9,6 +10,7 @@ import * as user from './modules/user'
 let openMock = false
 fnCreate(login, openMock)
 fnCreate(user, true)
+fnCreate(sensor, true)
 /**
  * 创建mock模拟数据
  * @param {*} mod 模块

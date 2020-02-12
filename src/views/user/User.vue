@@ -36,8 +36,7 @@
                 @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column type="index" label="#" align="center">
-        </el-table-column>
+        <el-table-column type="index" label="#" align="center"/>
         <el-table-column prop="username" label="用户名" align="center"/>
         <el-table-column prop="password" label="密码" align="center"/>
         <el-table-column prop="email" label="邮箱" align="center"/>

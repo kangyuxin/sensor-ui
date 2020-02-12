@@ -75,7 +75,7 @@ export default {
         },
         {
           icon: 'el-icon-cpu',
-          index: '3',
+          index: 'sensorList',
           title: '传感器'
         },
         {
