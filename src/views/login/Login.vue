@@ -68,6 +68,11 @@ export default {
             localStorage.setItem('ms_username', this.loginForm.username)
             this.$router.push('/')
           })
+            .catch((res) => {
+              console.log(res)
+              this.$message.error('Oh,ho！连接超时')
+              this.loading = false
+            })
         } else {
           this.loading = false
           this.$message.error('请输入账号和密码')
