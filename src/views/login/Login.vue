@@ -90,14 +90,14 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    background-image: url(../../assets/login_bg.jpg);
-    background-size: 100%;
+    background-image: url(../../assets/login_background.jpg);
+    background-size: cover;
   }
   .ms-title {
     width: 100%;
     line-height: 50px;
     text-align: center;
-    font-size: 20px;
+    font-size: 25px;
     color: #fff;
     border-bottom: 1px solid #ddd;
   }
@@ -105,7 +105,7 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 350px;
+    width: 450px;
     margin: -190px 0 0 -175px;
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.3);
@@ -119,12 +119,7 @@ export default {
   }
   .login-btn button {
     width: 100%;
-    height: 36px;
+    height: 50px;
     margin-bottom: 10px;
-  }
-  .login-tips {
-    font-size: 12px;
-    line-height: 30px;
-    color: #fff;
   }
 </style>

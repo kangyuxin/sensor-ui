@@ -85,12 +85,13 @@
         <el-table-column
           label="应用"
           prop="app"
-          align="center">
+          align="center"
+          width="300px">
         </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="80px" align="center">
           <template>
             <el-tooltip content="查询相关网关" placement="top" :enterable="false">
-              <el-button type="primary" icon="el-icon-share" @click="drawer = true" style="margin-left: 16px;"/>
+              <el-button type="primary" icon="el-icon-share" @click="drawer = true"/>
             </el-tooltip>
           </template>
         </el-table-column>
