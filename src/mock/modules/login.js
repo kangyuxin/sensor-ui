@@ -2,7 +2,7 @@
 
 export function login () {
   const loginData = {
-    'code': 200,
+    'status': 200,
     'msg': 'success',
     'data': {
       'id': null,
@@ -24,7 +24,7 @@ export function login () {
 // 登出接口
 export function logout () {
   const logoutData = {
-    'code': 200,
+    'status': 200,
     'msg': null,
     'data': {
     }

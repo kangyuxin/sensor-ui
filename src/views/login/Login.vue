@@ -52,10 +52,14 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (valid) {
           this.loading = true
-          let params = new URLSearchParams()
-          params.append('username', this.loginForm.username)
-          params.append('password', this.loginForm.password)
-          await this.$axios.post('/other/login.action', params).then((res) => {
+          let params = {
+            username: this.loginForm.username,
+            password: this.loginForm.password
+          }
+          // let params = new URLSearchParams()
+          // params.append('username', this.loginForm.username)
+          // params.append('password', this.loginForm.password)
+          await this.$http.login.login(params).then((res) => {
             console.log(res)
             if (res.status !== 200) {
               this.$message.error('账号或密码有误')
