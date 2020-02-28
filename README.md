@@ -1,5 +1,5 @@
 # sensor-ui
-
+vue + elementUI + axios + mockjs的一个中后台管理系统
 ## Project setup
 ```
 yarn install
